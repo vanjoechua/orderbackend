@@ -37,20 +37,16 @@ func (server *Server) GetOrders(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	offset := query.Get("offset")
 	searchTerm := query.Get("searchterm")
-	//fromDate,present := query["fromdate"]
-	//if !present {
-	//	fromDate[0] = ""
-	//}
-	//toDate,present := query["fromdate"]
-	//if !present {
-	//	fromDate[0] = ""
-	//}
+	fromDate := query["fromdate"]
+	toDate := query["todate"]
 
-	// layout := "2006-01-02T15:04:05.000Z"
+	layout := "2006-01-02"
 	options.Offset, _ = strconv.Atoi(offset)
 	options.SearchTerm = searchTerm
-	// options.FromDate, _ = time.Parse(layout,fromDate[0])
-	// options.ToDate, _ = time.Parse(layout,toDate[0])
+	fromDateStamp, _ := time.Parse(layout,fromDate[0])
+	toDateStamp, _ := time.Parse(layout,toDate[0])
+	options.FromDate = fromDateStamp
+	options.ToDate = toDateStamp
 
 	order := models.Order{}
 	orders, count, err := order.FindAllOrders(server.DB, options)
