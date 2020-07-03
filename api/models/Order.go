@@ -27,9 +27,16 @@ func (o *Order) FindAllOrders(db *gorm.DB, options struct{
 
 	// db.LogMode(true)
 
-	countObj := db.Table("order_items").Select("order_items.order_id").Joins("LEFT JOIN orders ON order_items.order_id = orders.id")
+	countObj := db.Table("order_items").Select("order_items.order_id").
+		Joins("LEFT JOIN orders ON order_items.order_id = orders.id").
+		Joins("LEFT JOIN customers ON customers.user_id = orders.customer_id").
+		Joins("LEFT JOIN customer_companies ON customer_companies.company_id = customers.company_id")
 	if options.SearchTerm != "" {
-		countObj = countObj.Where("orders.order_name LIKE ?","%"+options.SearchTerm+"%").Or("order_items.product LIKE ?","%"+options.SearchTerm+"%")
+		countObj = countObj.
+			Where("orders.order_name LIKE ?","%"+options.SearchTerm+"%").
+			Or("customers.name LIKE ?","%"+options.SearchTerm+"%").
+			Or("customer_companies.company_name LIKE ?","%"+options.SearchTerm+"%").
+			Or("order_items.product LIKE ?","%"+options.SearchTerm+"%")
 	}
 	if options.FromDate.IsZero() == false {
 		countObj = countObj.Where("orders.created_at::date >= ?",options.FromDate)
@@ -53,7 +60,11 @@ func (o *Order) FindAllOrders(db *gorm.DB, options struct{
 	orderObj = orderObj.Joins("LEFT JOIN customer_companies ON customer_companies.company_id = customers.company_id")
 	orderObj = orderObj.Joins("LEFT JOIN order_items ON order_items.order_id = orders.id")
 	if options.SearchTerm != "" {
-		orderObj = orderObj.Where("orders.order_name LIKE ?","%"+options.SearchTerm+"%").Or("order_items.product LIKE ?","%"+options.SearchTerm+"%")
+		orderObj = orderObj.
+			Where("orders.order_name LIKE ?","%"+options.SearchTerm+"%").
+			Or("customers.name LIKE ?","%"+options.SearchTerm+"%").
+			Or("customer_companies.company_name LIKE ?","%"+options.SearchTerm+"%").
+			Or("order_items.product LIKE ?","%"+options.SearchTerm+"%")
 	}
 	if options.FromDate.IsZero() == false {
 		orderObj = orderObj.Where("orders.created_at::date >= ?",options.FromDate)
