@@ -7,6 +7,7 @@ import (
 )
 
 func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
+	enableCors(&w)
 	w.WriteHeader(statusCode)
 	err := json.NewEncoder(w).Encode(data)
 	if err != nil {
@@ -24,4 +25,8 @@ func ERROR(w http.ResponseWriter, statusCode int, err error) {
 		return
 	}
 	JSON(w, http.StatusBadRequest, nil)
+}
+
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }

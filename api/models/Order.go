@@ -64,7 +64,7 @@ func (o *Order) FindAllOrders(db *gorm.DB, options struct{
 	orderObj = orderObj.Group("orders.id, orders.order_name, customers.name, customer_companies.company_name, orders.created_at")
 	orderObj = orderObj.Order("orders.id ASC")
 	orderObj = orderObj.Limit(5)
-	orderObj = orderObj.Offset(options.Offset)
+	orderObj = orderObj.Offset( options.Offset)
 	orderObj.Find(&orders)
 
 	return &orders, &count, nil
