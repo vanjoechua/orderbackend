@@ -15,12 +15,14 @@ func PopulateDb(db *gorm.DB) error {
 		fmt.Println(err)
 	}
 	customersTmpfile := "/tmp/customers.csv"
+	db.Exec("TRUNCATE TABLE customers")
 	db.Exec("COPY customers FROM '" + customersTmpfile + "' WITH (format csv, header)")
 
 	err2 := File("customer_companies.csv","/tmp/customer_companies.csv")
 	if err2 != nil {
 		fmt.Println(err2)
 	}
+	db.Exec("TRUNCATE TABLE customer_companies")
 	customerCompaniesTmpfile := "/tmp/customer_companies.csv"
 	db.Exec("COPY customer_companies FROM '" + customerCompaniesTmpfile + "' WITH (format csv, header)")
 
@@ -28,6 +30,7 @@ func PopulateDb(db *gorm.DB) error {
 	if err3 != nil {
 		fmt.Println(err3)
 	}
+	db.Exec("TRUNCATE TABLE orders")
 	ordersTmpfile := "/tmp/orders.csv"
 	db.Exec("COPY orders FROM '" + ordersTmpfile + "' WITH (format csv, header)")
 
@@ -35,6 +38,7 @@ func PopulateDb(db *gorm.DB) error {
 	if err4 != nil {
 		fmt.Println(err4)
 	}
+	db.Exec("TRUNCATE TABLE order_items")
 	orderItemsTmpfile := "/tmp/order_items.csv"
 	db.Exec("COPY order_items FROM '" + orderItemsTmpfile + "' WITH (format csv, header)")
 
@@ -42,6 +46,7 @@ func PopulateDb(db *gorm.DB) error {
 	if err5 != nil {
 		fmt.Println(err5)
 	}
+	db.Exec("TRUNCATE TABLE deliveries")
 	deliveriesTmpfile := "/tmp/deliveries.csv"
 	db.Exec("COPY deliveries FROM '" + deliveriesTmpfile + "' WITH (format csv, header)")
 
