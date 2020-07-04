@@ -9,6 +9,8 @@ This application was created using:
 
 You will need to have access to a PostgreSQL database
 
+Please have a /tmp directory in your local machine. The script will copy the CSV files to this directory and use them to populate the database tables.
+
 Steps to install this application
 1. Clone this repository to your computer
 `git clone https://github.com/vanjoechua/orderbackend.git <installation-directory>`
