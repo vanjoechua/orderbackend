@@ -28,4 +28,4 @@ Steps to install this application
 5. CD to the installation root directory. Run the program:
 `go run main.go`
 
-This will run a REST API server on localhost:8080
+This will run a REST API server on http://localhost:8080
